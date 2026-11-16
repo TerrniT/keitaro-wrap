@@ -1,5 +1,7 @@
 # Keitaro Wrapper
 
+[![CI](https://github.com/TerrniT/keitaro-wrap/actions/workflows/ci.yml/badge.svg)](https://github.com/TerrniT/keitaro-wrap/actions/workflows/ci.yml)
+
 Обёртка над рекламным трекером **Keitaro**: создание кампаний в два клика и редактор офферов в потоках с живыми цифрами из Keitaro.
 
 Проект сделан как тестовое задание: FastAPI + SQLAlchemy на бэкенде, React + shadcn/ui на фронтенде.
@@ -267,6 +269,8 @@ Keitaro — источник истины. Локальная БД хранит 
 
 ## Тесты
 
+### Backend
+
 ```bash
 cd backend
 pytest
@@ -280,10 +284,61 @@ pytest
 - создание кампании с двумя потоками;
 - добавление/удаление/возврат офферов и «надгробия».
 
+### E2E: полный цикл создания кампании в UI
+
+Сценарий Playwright проходит весь путь в браузере:
+
+1. открывает `Создать кампанию`;
+2. проверяет, что кнопка создания заблокирована до заполнения обязательных полей;
+3. вводит название, выбирает гео `Germany` и оффер `10184`;
+4. проверяет предпросмотр `test_kotovsky_*` и выбранные потоки;
+5. нажимает «Создать кампанию»;
+6. проверяет, что приложение перешло в редактор кампании;
+7. проверяет два потока (`Google` + `Offers`), оффер `#10184` и долю `100%`;
+8. сверяет payload, который ушёл в `POST /api/campaigns` (имя, гео, offer_id, domain_id, group_id, traffic_source_id).
+
+Файл: `frontend/e2e/create-campaign.spec.ts`.
+
+```bash
+cd frontend
+npm install
+npx playwright install chromium   # один раз
+npm run test:e2e                  # mock Keitaro API, детерминированно, работает в CI
+npm run test:e2e:ui               # Playwright UI mode
+```
+
+Mock-сервер для E2E лежит в `frontend/e2e/mock-api.ts`, фикстуры — в `fixtures.ts`.
+
+#### Live E2E против настоящего Keitaro
+
+Тот же сценарий можно прогнать против реального трекера. Тест создаёт кампанию
+`test_kotovsky_e2e_<timestamp>`, проверяет два потока и **архивирует её в `finally`**.
+
+```bash
+# 1. В отдельном терминале подними backend с боевым .env
+cd backend
+uvicorn app.main:app --reload --port 8000
+
+# 2. Запусти live-сценарий
+cd frontend
+E2E_LIVE=1 E2E_BACKEND_URL=http://127.0.0.1:8000 npm run test:e2e:live
+```
+
+Оффер по умолчанию — `10184`; можно переопределить:
+
+```bash
+E2E_LIVE=1 E2E_BACKEND_URL=http://127.0.0.1:8000 \
+  E2E_OFFER_ID=10184 E2E_COUNTRY=Germany \
+  npm run test:e2e:live
+```
+
+Файл: `frontend/e2e/create-campaign-live.spec.ts`.
+
 ## Структура проекта
 
 ```
 .
+├── .github/workflows/ci.yml     # backend tests + frontend build + E2E
 ├── backend/
 │   ├── alembic/                 # миграции
 │   ├── app/
@@ -296,10 +351,12 @@ pytest
 │   ├── tests/
 │   └── requirements*.txt
 ├── frontend/
+│   ├── e2e/                     # Playwright: mock + live сценарии
 │   ├── src/
 │   │   ├── components/          # shell, комбобоксы, shadcn/ui
 │   │   ├── pages/               # кампании, создание, редактор, настройки
 │   │   └── lib/                 # API-клиент, форматирование
+│   ├── playwright.config.ts
 │   └── package.json
 ├── docs/screenshots/
 ├── Dockerfile

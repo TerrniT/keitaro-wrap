@@ -16,6 +16,12 @@ frontend:
 test:
 	cd backend && pytest
 
+e2e:
+	cd frontend && npm run test:e2e
+
+e2e-live:
+	cd frontend && E2E_LIVE=1 npm run test:e2e:live
+
 build:
 	cd frontend && npm run build
 
