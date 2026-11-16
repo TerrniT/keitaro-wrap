@@ -12,8 +12,6 @@ from sqlalchemy.pool import StaticPool
 from app.database import Base
 from app import models  # noqa: F401
 
-pytest_plugins = ("pytest_asyncio.plugin",)
-
 
 @pytest.fixture()
 def db() -> Session:
