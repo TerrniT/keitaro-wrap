@@ -65,7 +65,9 @@ export function CreateCampaignPage() {
   }, [meta, initialized]);
 
   const prefix = meta?.settings.campaign_prefix ?? "test_kotovsky_";
-  const finalName = `${prefix}${name.trim() || "campaign1"}`;
+  const typedName = name.trim();
+  const suffix = typedName.startsWith(prefix) ? typedName.slice(prefix.length) : typedName;
+  const finalName = `${prefix}${suffix || "campaign1"}`;
   const countries = React.useMemo(
     () => new Map((meta?.countries ?? []).map((country) => [country.code, country])),
     [meta],

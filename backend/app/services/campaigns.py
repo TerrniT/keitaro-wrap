@@ -31,11 +31,10 @@ from ..utils import (
     normalize_geo,
     safe_int,
     slugify_alias,
-    to_float,
 )
 from . import offers as offers_service
 from . import stats as stats_service
-from .app_settings import get_or_create_settings, settings_out
+from .app_settings import get_or_create_settings
 
 
 def _zero_metrics() -> StatMetrics:
