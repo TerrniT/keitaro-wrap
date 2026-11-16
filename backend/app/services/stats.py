@@ -25,7 +25,7 @@ INTERVAL_ALIASES = {
     "all_time": "all",
 }
 
-MEASURES = ["clicks", "conversions", "revenue", "cost", "profit", "roi", "crs", "epc"]
+MEASURES = ["clicks", "conversions", "revenue", "cost", "profit", "roi", "cr", "epc"]
 
 
 def normalize_interval(value: str | None) -> str:
@@ -62,7 +62,7 @@ def _metrics_from_row(row: dict[str, Any]) -> StatMetrics:
     roi = to_float(row.get("roi"))
     if not roi and cost:
         roi = profit / cost * 100
-    cr = to_float(row.get("crs"))
+    cr = to_float(row.get("cr"))
     if not cr and clicks:
         cr = conversions / clicks * 100
     epc = to_float(row.get("epc"))
