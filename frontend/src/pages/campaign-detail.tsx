@@ -390,7 +390,18 @@ export function CampaignDetailPage() {
         <Alert variant="destructive">
           <AlertTriangle className="h-4 w-4" />
           <AlertTitle>Кампания недоступна</AlertTitle>
-          <AlertDescription>{message}</AlertDescription>
+          <AlertDescription className="flex flex-col gap-3">
+            <span>{message}</span>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-fit"
+              onClick={() => campaignQuery.refetch()}
+            >
+              <RefreshCw className="h-4 w-4" />
+              Повторить
+            </Button>
+          </AlertDescription>
         </Alert>
       </div>
     );

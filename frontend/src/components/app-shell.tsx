@@ -170,7 +170,7 @@ export function AppShell() {
           <span>Keitaro Wrapper · FastAPI + React</span>
           <span className="flex items-center gap-1.5">
             <Activity className="h-3 w-3" />
-           данные из Keitaro в реальном времени
+            данные из Keitaro
           </span>
         </footer>
       </main>
