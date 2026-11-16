@@ -7,7 +7,7 @@ services:
     env_file:
       - .env
     environment:
-      DATABASE_URL: sqlite:////app/data/keitaro_wrapper.db
+      # The entrypoint applies Alembic migrations before starting uvicorn.
       AUTO_CREATE_TABLES: "false"
     volumes:
       - ./data:/app/data
