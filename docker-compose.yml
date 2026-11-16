@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    container_name: keitaro-wrapper
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: sqlite:////app/data/keitaro_wrapper.db
+      AUTO_CREATE_TABLES: "false"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

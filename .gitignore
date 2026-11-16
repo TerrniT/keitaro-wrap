@@ -1,0 +1,32 @@
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.venv/
+.deps/
+venv/
+
+# Data / build artifacts
+backend/data/
+backend/static/
+data/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+*.sqlite
+*.sqlite3
+*.db
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
