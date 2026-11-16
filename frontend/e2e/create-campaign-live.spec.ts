@@ -18,6 +18,7 @@ test.describe("@live создание кампании в реальном Keita
     const suffix = `e2e_${Date.now()}`;
     const offerId = process.env.E2E_OFFER_ID ?? "10184";
     const country = process.env.E2E_COUNTRY ?? "Germany";
+    const countryCode = process.env.E2E_COUNTRY_CODE ?? "DE";
     let campaignId: number | null = null;
 
     try {
@@ -69,7 +70,7 @@ test.describe("@live создание кампании в реальном Keita
       expect(freshResponse.ok()).toBeTruthy();
       const fresh = await freshResponse.json();
       expect(fresh.streams).toHaveLength(2);
-      expect(fresh.campaign.geo).toContain("DE");
+      expect(fresh.campaign.geo).toContain(countryCode);
     } finally {
       // Always clean up the test campaign from Keitaro.
       if (campaignId) {

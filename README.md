@@ -328,9 +328,12 @@ E2E_LIVE=1 E2E_BACKEND_URL=http://127.0.0.1:8000 npm run test:e2e:live
 
 ```bash
 E2E_LIVE=1 E2E_BACKEND_URL=http://127.0.0.1:8000 \
-  E2E_OFFER_ID=10184 E2E_COUNTRY=Germany \
+  E2E_OFFER_ID=10184 E2E_COUNTRY=Germany E2E_COUNTRY_CODE=DE \
   npm run test:e2e:live
 ```
+
+Если меняете страну, укажите её ISO-код в `E2E_COUNTRY_CODE` — тест
+проверяет, что он попал в фильтр первого потока.
 
 Файл: `frontend/e2e/create-campaign-live.spec.ts`.
 
